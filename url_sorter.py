@@ -70,17 +70,18 @@ def extract_domain(url):
     # print 'extract_domain:url', url
     full_domain = urlparse.urlparse(url).netloc
     # print 'extract_domain:full_domain', full_domain
+    domain = re.sub('^www\.','',full_domain)
     # Handle known problem cases
     # DeviantArt.com
-    if 'deviantart.com' in full_domain:
-        short_domain = re.sub('.+deviantart.com', 'deviantart.com', full_domain)
+    if 'deviantart.com' in domain:
+        short_domain = re.sub('.+deviantart.com', 'deviantart.com', domain)
         return short_domain
     # Tumblr.com
-    elif '.tumblr.com' in full_domain:
-        short_domain = re.sub('.+tumblr.com', 'tumblr.com', full_domain)
+    elif '.tumblr.com' in domain:
+        short_domain = re.sub('.+tumblr.com', 'tumblr.com', domain)
         return short_domain
     else:
-        return full_domain
+        return domain
 
 def sanitize_filename(filename):
     # Sanitize a filename (not a path)
@@ -133,11 +134,15 @@ def furaffinity_convert(url):
     # Turn a furaffinity URL into a furaffinity username.
     # Valid URL examples:
     # http://www.furaffinity.net/user/scorpdk/
-    pattern = r'furaffinity\.net/user/(.+?)/?'
+    #print 'furaffinity_convert: url:',url
+    pattern = r'furaffinity\.net/user/(.+)/?'
     username_search = re.search(pattern,url, re.DOTALL | re.IGNORECASE)
     if username_search:
         username = username_search.group(1)
+        if username[-1] == '/':#crop trailing backslash
+            username = username[0:-1]
         return username
+        #print 'furaffinity_convert: username:',username
 
 
 def inkbunny_convert(url):
