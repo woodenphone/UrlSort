@@ -1,3 +1,4 @@
 paste_here.txt
 parsed_output/
 output/
+*.pyc

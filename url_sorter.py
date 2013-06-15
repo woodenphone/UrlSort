@@ -80,6 +80,9 @@ def extract_domain(url):
     elif '.tumblr.com' in domain:
         short_domain = re.sub('.+tumblr.com', 'tumblr.com', domain)
         return short_domain
+    # Too long
+    elif len(domain) > 200:
+        return "TOO_LONG"
     else:
         return domain
 
