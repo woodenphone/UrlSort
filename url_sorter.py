@@ -235,17 +235,13 @@ def export_usernames_from_dict(link_dict):
             elif domain_key == 'inkbunny.net':
                 if '.php' not in output_url:
                     domain_lines.append(inkbunny_convert(output_url))
-                else:
-                    domain_lines.append(output_url)
             # Handle Pixiv
             elif domain_key == 'www.pixiv.net':
                 domain_lines.append(pixiv_convert(output_url))
             # Handle Ekas Portal
             elif domain_key == 'aryion.com':
                 domain_lines.append(aryion_convert(output_url))
-            # If no handler
-            else:
-                domain_lines.append(output_url)
+
         # print 'domain_lines', domain_lines
         unique_domain_lines = uniquify(domain_lines)
         output_string = ''
