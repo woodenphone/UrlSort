@@ -163,6 +163,7 @@ def inkbunny_convert(url):
     for bad_string in bad_strings:
         if bad_string in url:
             print 'inkbunny_convert: Cannot parse url:',url
+            return None
     pattern = r'inkbunny\.net/([^/]+$)'
     username_search = re.search(pattern,url, re.DOTALL | re.IGNORECASE)
     if username_search:
