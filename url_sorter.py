@@ -241,16 +241,16 @@ def export_usernames_from_dict(link_dict):
             # Handle Ekas Portal
             elif domain_key == 'aryion.com':
                 domain_lines.append(aryion_convert(output_url))
-
         # print 'domain_lines', domain_lines
-        unique_domain_lines = uniquify(domain_lines)
-        output_string = ''
-        # Assemble output string from URL strings
-        for line in unique_domain_lines:
-            output_string += str(line) + '\n'
-        # print 'output_string', output_string
-        output_path = 'parsed_output/' + output_filename
-        save_text(output_path, output_string)
+        if len(domain_lines) > 0:
+            unique_domain_lines = uniquify(domain_lines)
+            output_string = ''
+            # Assemble output string from URL strings
+            for line in unique_domain_lines:
+                output_string += str(line) + '\n'
+            # print 'output_string', output_string
+            output_path = 'parsed_output/' + output_filename
+            save_text(output_path, output_string)
 
 def export_from_file(input_file_path='paste_here.txt'):
     unsorted_data = load_textfile(input_file_path)
