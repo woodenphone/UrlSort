@@ -20,7 +20,7 @@ class TestExtract_Domain(unittest.TestCase):
         self.assertTrue(len(domain) < 200)
 
 
-class TestInkBunny(unittest.TestCase):
+class TestInkBunnyConvert(unittest.TestCase):
     def test_dot_php(self):
         test_tuples = [("https://inkbunny.net/submissionview.php?id=419422",None), ("https://inkbunny.net/watchlist_process.php?mode=watching&user_id=143254", None), ("https://inkbunny.net/submissionview.php?id=396311&page=3", None)]
         for test_tuple in test_tuples:
