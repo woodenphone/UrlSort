@@ -19,6 +19,17 @@ class TestExtract_Domain(unittest.TestCase):
         domain = extract_domain(test_url)
         self.assertTrue(len(domain) < 200)
 
+    def test_asterisk_at_end_of_url(self):
+        # Test to catch bug when asterisk is at end of a url
+        test_tuples = [("http://askspotlight.tumblr.com*", "tumblr.com"), ("http://askspotlight.tumblr.com","tumblr.com")]
+        for test_tuple in test_tuples:
+            test_input = test_tuple[0]
+            expected_result = test_tuple[1]
+            result = extract_domain(test_input)
+            self.assertEqual(result, expected_result)
+
+
+
 
 class TestInkBunnyConvert(unittest.TestCase):
     def test_dot_php(self):
@@ -44,6 +55,7 @@ class TestInkBunnyConvert(unittest.TestCase):
             expected_result = test_tuple[1]
             result = inkbunny_convert(test_input)
             self.assertEqual(result, expected_result)
+
 
 
 def main():
