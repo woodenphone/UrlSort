@@ -71,6 +71,7 @@ def extract_domain(url):
     full_domain = urlparse.urlparse(url).netloc
     # print 'extract_domain:full_domain', full_domain
     domain = re.sub('^www\.','',full_domain)
+    domain = sanitize_dict_name(domain)
     # Handle known problem cases
     # DeviantArt.com
     if 'deviantart.com' in domain:
@@ -90,6 +91,10 @@ def sanitize_filename(filename):
     # Sanitize a filename (not a path)
     sanitized_filename = re.sub('[^\./a-zA-Z0-9_-]+', '', filename)
     return sanitized_filename
+
+def sanitize_dict_name(dict_name):
+    sanitized_dict_name = re.sub("[^\.a-zA-Z0-9_-]", "", dict_name)
+    return sanitized_dict_name
 
 def build_link_dict(unsorted_data):
     #turn a string with urls in it into a dict using format {'DomainName.com':['url1','url2']}
