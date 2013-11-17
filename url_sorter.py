@@ -228,6 +228,7 @@ def export_usernames_from_dict(link_dict):
         print 'domain_key', domain_key
         output_filename = sanitize_filename(domain_key) + '.txt'
         domain_lines = []
+        pixiv_domains = ["pixiv.net","www.pixiv.net"]
         for output_url in link_dict[domain_key]:
             #print 'output_url', output_url
             # Handle DeviantArt
@@ -241,7 +242,7 @@ def export_usernames_from_dict(link_dict):
                 if '.php' not in output_url:
                     domain_lines.append(inkbunny_convert(output_url))
             # Handle Pixiv
-            elif domain_key == 'www.pixiv.net':
+            elif domain_key in pixiv_domains:
                 domain_lines.append(pixiv_convert(output_url))
             # Handle Ekas Portal
             elif domain_key == 'aryion.com':

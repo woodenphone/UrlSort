@@ -58,6 +58,22 @@ class TestInkBunnyConvert(unittest.TestCase):
 
 
 
+class TestPixivConvert(unittest.TestCase):
+    def test_known_user_pages(self):
+        test_tuples = [
+        # User homepage
+        ("http://www.pixiv.net/member.php?id=527046","527046")
+        # User Gallery listing
+        ,("http://www.pixiv.net/member_illust.php?id=2675947", "2675947")
+        # User bookmarks listing
+        ,("http://www.pixiv.net/bookmark.php?id=293363&rest=show&p=3", "293363")]
+        for test_tuple in test_tuples:
+            test_input = test_tuple[0]
+            expected_result = test_tuple[1]
+            result = pixiv_convert(test_input)
+            self.assertEqual(result, expected_result)
+
+
 def main():
     unittest.main()
 
