@@ -188,7 +188,7 @@ def tumblr_convert(url):
     # if no match, just return the input url
     return url
 
-def pixiv_convert(url):# TODO
+def pixiv_convert(url):
     # Turn a Pixiv URL into a Pixiv UserID.
     # Valid URL examples:
     #http://www.pixiv.net/member.php?id=312468
@@ -205,7 +205,7 @@ def pixiv_convert(url):# TODO
             username = username_search.group(1)
             return username
 
-def aryion_convert(url):# TODO
+def aryion_convert(url):
     # Turn an Ekas Portal URL into an Ekas Portal username.
     # Valid URL examples:
     #http://aryion.com/g4/user/GTSdev
@@ -214,6 +214,60 @@ def aryion_convert(url):# TODO
     if username_search:
         username = username_search.group(1)
         return username
+
+def hentaifoundry_convert(link):
+    """Convert a url into a username if possible"""
+    # New style links (1-12-2013 onwards?)
+    # Profile page
+    # http://www.hentai-foundry.com/user/NinjaKitty/profile
+    # http://www.hentai-foundry.com/user/NinjaKitty/faves/stories
+    #http://www.hentai-foundry.com/user/NinjaKitty/faves/pictures
+    profile_page_search_regex = """hentai\-foundry\.com/user/([^/]+)/?"""
+    profile_page_search = re.search(profile_page_search_regex, link)
+    if profile_page_search:
+        return profile_page_search.group(1)
+
+    # Picture gallery page, also picture submission page
+    # http://www.hentai-foundry.com/pictures/user/NinjaKitty
+    # http://www.hentai-foundry.com/pictures/user/NinjaKitty/242338/Raffle-Winner-AnimeFlux---123-Square
+    picture_gallery_page_search_regex = """hentai\-foundry\.com/pictures/user/([^/]+)"""
+    picture_gallery_page_search = re.search(picture_gallery_page_search_regex, link)
+    if picture_gallery_page_search:
+        return picture_gallery_page_search.group(1)
+
+    # Stories gallery page
+    # http://www.hentai-foundry.com/stories/user/NinjaKitty
+    stories_gallery_page_search_regex = """hentai\-foundry\.com/pictures/user/([^/]+)"""
+    stories_gallery_page_search = re.search(stories_gallery_page_search_regex, link)
+    if stories_gallery_page_search:
+        return stories_gallery_page_search.group(1)
+
+    # Favorite users page
+    # http://www.hentai-foundry.com/users/Faves?username=NinjaKitty
+    favorite_users_page_search_regex = """hentai\-foundry\.com/users/Faves?username=(.+)$"""
+    favorite_users_page_search = re.search(favorite_users_page_search_regex, link)
+    if favorite_users_page_search:
+        return favorite_users_page_search.group(1)
+
+    #
+    # Old style links (before 1-12-2013)
+    #
+    # Old profile page
+    # http://www.hentai-foundry.com/profile-hizzacked.php
+    old_profile_page_search_regex = """hentai\-foundry\.com/profile-(.+?)\.php"""
+    old_profile_page_search = re.search(old_profile_page_search_regex, link)
+    if old_profile_page_search:
+        return old_profile_page_search.group(1)
+
+    # Old user page
+    # http://www.hentai-foundry.com/user-Dboy.php
+    old_user_page_search_regex = """hentai\-foundry\.com/user-(.+?)\.php"""
+    old_user_page_search = re.search(old_user_page_search_regex, link)
+    if old_user_page_search:
+        return old_user_page_search.group(1)
+    # If all extractors fail, assume already processed
+    if "hentai-foundry.com" not in link:
+        return link
 # End converter functions
 
 def export_usernames_from_file(input_file_path='paste_here.txt'):

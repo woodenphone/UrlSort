@@ -74,6 +74,46 @@ class TestPixivConvert(unittest.TestCase):
             self.assertEqual(result, expected_result)
 
 
+
+class TestHentaiFoundryConvert(unittest.TestCase):
+    def test_known_2013_user_pages(self):
+        test_tuples = [
+        # User profile page
+        ("http://www.hentai-foundry.com/user/NinjaKitty/profile","NinjaKitty")
+        # User Gallery listing
+        ,("http://www.hentai-foundry.com/pictures/user/NinjaKitty", "NinjaKitty")
+        # User bookmarks listing
+        ,("http://www.hentai-foundry.com/user/NinjaKitty/faves/stories", "NinjaKitty")]
+        for test_tuple in test_tuples:
+            test_input = test_tuple[0]
+            expected_result = test_tuple[1]
+            result = hentaifoundry_convert(test_input)
+            self.assertEqual(result, expected_result)
+
+    def test_known_old_user_pages(self):
+        test_tuples = [
+        # User profile page
+        ("http://www.hentai-foundry.com/profile-hizzacked.php","hizzacked")
+        # User page
+        ,("http://www.hentai-foundry.com/user-Dboy.php","Dboy")
+        # User image gallery listing
+        ,("http://www.hentai-foundry.com/user_pictures-fab3716.page-1.php", "fab3716")
+
+        # User stories gallery listing
+        ,("http://www.hentai-foundry.com/user_stories-nihaotomita.page-1.php", "nihaotomita")
+        # User stories gallery listing
+        ,("http://www.hentai-foundry.com/stories-fab3716.php", "fab3716")
+
+        # User bookmarks listing
+        ,("http://www.hentai-foundry.com/favorite_pictures-DarkDP.php", "DarkDP")
+        ]
+        for test_tuple in test_tuples:
+            test_input = test_tuple[0]
+            expected_result = test_tuple[1]
+            result = hentaifoundry_convert(test_input)
+            self.assertEqual(result, expected_result)
+
+
 def main():
     unittest.main()
 
