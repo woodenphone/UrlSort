@@ -18,3 +18,4 @@ inkbunny.net
 www.pixiv.net
 aryion.com
 pixiv.net
+hentaifoundry.com
