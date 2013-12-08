@@ -265,6 +265,22 @@ def hentaifoundry_convert(link):
     old_user_page_search = re.search(old_user_page_search_regex, link)
     if old_user_page_search:
         return old_user_page_search.group(1)
+
+    # Old user gallery
+    # http://www.hentai-foundry.com/user_pictures-fab3716.page-1.php
+    # http://www.hentai-foundry.com/user_stories-nihaotomita.page-1.php
+    old_user_gallery_search_regex = """hentai-foundry.com/user_(?:pictures)?(?:stories)-([^\.]+)(?:\.page-\d+)?.php"""
+    old_user_gallery_search = re.search(old_user_gallery_search_regex, link)
+    if old_user_gallery_search:
+        return old_user_gallery_search.group(1)
+
+    # Old user stories gallery
+    # http://www.hentai-foundry.com/stories-fab3716.php
+    old_user_stories_search_regex = """hentai-foundry.com/stories-([^\.]+)(?:\.page-\d+)?.php"""
+    old_user_stories_search = re.search(old_user_stories_search_regex, link)
+    if old_user_stories_search:
+        return old_user_stories_search.group(1)
+
     # If all extractors fail, assume already processed
     if "hentai-foundry.com" not in link:
         return link
@@ -301,6 +317,9 @@ def export_usernames_from_dict(link_dict):
             # Handle Ekas Portal
             elif domain_key == 'aryion.com':
                 domain_lines.append(aryion_convert(output_url))
+            # Handle HentaiFoundry
+            elif domain_key == 'hentai-foundry.com':
+                domain_lines.append(hentaifoundry_convert(output_url))
         # print 'domain_lines', domain_lines
         if len(domain_lines) > 0:
             unique_domain_lines = uniquify(domain_lines)
