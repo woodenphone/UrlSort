@@ -304,9 +304,6 @@ def hentaifoundry_convert(link):
     if old_user_favs_search:
         return old_user_favs_search.group(1)
 
-    # If all extractors fail, assume already processed
-    if "hentai-foundry.com" not in link:
-        return link
 # End converter functions
 
 def export_usernames_from_file(input_file_path='paste_here.txt'):
