@@ -75,6 +75,8 @@ class TestPixivConvert(unittest.TestCase):
 
 
 
+
+
 class TestHentaiFoundryConvert2013(unittest.TestCase):
     # Profile
     def test_known_2013_profile(self):
@@ -166,6 +168,7 @@ class TestHentaiFoundryConvertOld(unittest.TestCase):
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
+
 class TestHentaiFoundryConvertBadInput(unittest.TestCase):
     def test_empty_string(self):
         test_input= ""
@@ -204,13 +207,19 @@ class TestHentaiFoundryConvertBadInput(unittest.TestCase):
         expected_result = None
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
-
+    # Homepage
     def test_site_root(self):
         test_input= "http://www.hentai-foundry.com"
         expected_result = None
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
+    def test_site_index(self):
+        test_input= "http://www.hentai-foundry.com/site/index"
+        expected_result = None
+        result = hentaifoundry_convert(test_input)
+        self.assertEqual(result, expected_result)
+    # Clickthrough page
     def test_clickthrough_1(self):
         test_input= "http://www.hentai-foundry.com/enter_agree.php"
         expected_result = None
@@ -223,12 +232,7 @@ class TestHentaiFoundryConvertBadInput(unittest.TestCase):
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
-    def test_site_index(self):
-        test_input= "http://www.hentai-foundry.com/site/index"
-        expected_result = None
-        result = hentaifoundry_convert(test_input)
-        self.assertEqual(result, expected_result)
-
+    # Urls with missing parts
     def test_fav_pictures_no_user(self):
         test_input= "http://www.hentai-foundry.com/favorite_pictures-"
         expected_result = None
@@ -259,6 +263,7 @@ class TestHentaiFoundryConvertBadInput(unittest.TestCase):
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
+    # URLs without data to extract
     def test_old_picture_page(self):
         test_input= "http://www.hentai-foundry.com/pic-105917.html"
         expected_result = None

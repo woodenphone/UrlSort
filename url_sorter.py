@@ -242,12 +242,28 @@ def hentaifoundry_convert(link):
     if stories_gallery_page_search:
         return stories_gallery_page_search.group(1)
 
+    # Favorite pictures page
+    # http://www.hentai-foundry.com/users/Faves?username=NinjaKitty
+    favorite_pictures_page_search_regex = """http://www.hentai-foundry.com/users/Faves\?username=(\w+)"""
+    favorite_pictures_page_search = re.search(favorite_pictures_page_search_regex, link)
+    if favorite_pictures_page_search:
+        return favorite_pictures_page_search.group(1)
+
     # Favorite users page
     # http://www.hentai-foundry.com/users/Faves?username=NinjaKitty
     favorite_users_page_search_regex = """hentai\-foundry\.com/users/Faves?username=(.+)$"""
     favorite_users_page_search = re.search(favorite_users_page_search_regex, link)
     if favorite_users_page_search:
         return favorite_users_page_search.group(1)
+
+    # Favorite users recent pictures/stories page
+    # http://www.hentai-foundry.com/users/FaveUsersRecentPictures?username=NinjaKitty
+    # http://www.hentai-foundry.com/users/FaveUsersRecentStories?username=NinjaKitty
+    favorite_users_recent_pictures_page_search_regex = """hentai-foundry.com/users/FaveUsersRecent(?:Pictures)?(?:Stories)?\?username=(\w+)"""
+    favorite_users_recent_pictures_page_search = re.search(favorite_users_recent_pictures_page_search_regex, link)
+    if favorite_users_recent_pictures_page_search:
+        return favorite_users_recent_pictures_page_search.group(1)
+
 
     #
     # Old style links (before 1-12-2013)
@@ -269,7 +285,7 @@ def hentaifoundry_convert(link):
     # Old user gallery
     # http://www.hentai-foundry.com/user_pictures-fab3716.page-1.php
     # http://www.hentai-foundry.com/user_stories-nihaotomita.page-1.php
-    old_user_gallery_search_regex = """hentai-foundry.com/user_(?:pictures)?(?:stories)-([^\.]+)(?:\.page-\d+)?.php"""
+    old_user_gallery_search_regex = """hentai-foundry.com/user_(?:pictures)?(?:stories)?-([^\.]+)(?:\.page-\d+)?.php"""
     old_user_gallery_search = re.search(old_user_gallery_search_regex, link)
     if old_user_gallery_search:
         return old_user_gallery_search.group(1)
@@ -280,6 +296,13 @@ def hentaifoundry_convert(link):
     old_user_stories_search = re.search(old_user_stories_search_regex, link)
     if old_user_stories_search:
         return old_user_stories_search.group(1)
+
+    # Old user bookmarks
+    # http://www.hentai-foundry.com/favorite_pictures-DarkDP.php
+    old_user_favs_search_regex = """hentai-foundry.com/favorite_(?:pictures)?(?:stories)?-([^\.]+)(?:\.page-\d+)?.php"""
+    old_user_favs_search = re.search(old_user_favs_search_regex, link)
+    if old_user_favs_search:
+        return old_user_favs_search.group(1)
 
     # If all extractors fail, assume already processed
     if "hentai-foundry.com" not in link:
