@@ -73,6 +73,12 @@ class TestPixivConvert(unittest.TestCase):
             result = pixiv_convert(test_input)
             self.assertEqual(result, expected_result)
 
+    def test_slash_users(self):
+        test_url = "http://www.pixiv.com/users/5097"
+        expected_result = "5097"
+        result = pixiv_convert(test_url)
+        self.assertEqual(result, expected_result)
+
 
 
 
@@ -172,25 +178,13 @@ class TestHentaiFoundryConvertOld(unittest.TestCase):
 class TestHentaiFoundryConvertBadInput(unittest.TestCase):
     def test_empty_string(self):
         test_input= ""
-        expected_result = ""
+        expected_result = None
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
     # Regex from development
     def test_dev_regex_1(self):
         test_input= "http://www.hentai-foundry\.com/\w+-\d+\.html"
-        expected_result = None
-        result = hentaifoundry_convert(test_input)
-        self.assertEqual(result, expected_result)
-
-    def test_dev_regex_2(self):
-        test_input= "http://www.hentai-foundry.com/pictures/user/([^/]+)"
-        expected_result = None
-        result = hentaifoundry_convert(test_input)
-        self.assertEqual(result, expected_result)
-
-    def test_dev_regex_3(self):
-        test_input= "http://www.hentai-foundry.com/user/([^/]+)/profile"
         expected_result = None
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)

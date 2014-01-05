@@ -191,13 +191,15 @@ def tumblr_convert(url):
 def pixiv_convert(url):
     # Turn a Pixiv URL into a Pixiv UserID.
     # Valid URL examples:
-    #http://www.pixiv.net/member.php?id=312468
-    #http://www.pixiv.net/bookmark.php?id=293363&rest=show&p=3
-    #http://www.pixiv.net/member_illust.php?id=2947383
+    # http://www.pixiv.net/member.php?id=312468
+    # http://www.pixiv.net/bookmark.php?id=293363&rest=show&p=3
+    # http://www.pixiv.net/member_illust.php?id=2947383
+    # http://www.pixiv.com/users/5097
     patterns = [
     r'pixiv\.net/member.\php\?id=(\d+)',
     r'pixiv\.net/bookmark\.php\?id=(\d+)',
-    r'pixiv\.net/member_illust\.php\?id=(\d+)'
+    r'pixiv\.net/member_illust\.php\?id=(\d+)',
+    'pixiv.com/users/(\d+)'
     ]
     for pattern in patterns:
         username_search = re.search(pattern,url, re.DOTALL | re.IGNORECASE)
@@ -318,7 +320,7 @@ def export_usernames_from_dict(link_dict):
         print 'domain_key', domain_key
         output_filename = sanitize_filename(domain_key) + '.txt'
         domain_lines = []
-        pixiv_domains = ["pixiv.net","www.pixiv.net"]
+        pixiv_domains = ["pixiv.net", "www.pixiv.net", "pixiv.com", "www.pixiv.com"]
         for output_url in link_dict[domain_key]:
             #print 'output_url', output_url
             # Handle DeviantArt
