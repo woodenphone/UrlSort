@@ -130,15 +130,24 @@ def export_urls_from_dict(link_dict):
 
 # Converter functions; These take URLs and return usernames for that site
 def deviantart_convert(url):
-    # Turn a DeviantArt URL into a DeviantArt username.
-    # Valid URL examples:
+    """Turn a DeviantArt URL into a DeviantArt username."""
+    # Submission, user, and gallery pages
     # http://ssenarrya.deviantart.com/
     # https://nawa88.deviantart.com/art/Pinkie-Pie-s-after-party-at-night-rule-34-313639046
-    pattern = r'https?://(.+?)\.deviantart.com'
-    username_search = re.search(pattern,url, re.DOTALL | re.IGNORECASE)
-    if username_search:
-        username = username_search.group(1)
+    extractor_1_pattern = r'https?://(.+?)\.deviantart.com'
+    extractor_1_username_search = re.search(extractor_1_pattern,url, re.DOTALL | re.IGNORECASE)
+    if extractor_1_username_search:
+        username = extractor_1_username_search.group(1)
         return username
+    # Image direct links
+    # http://fc08.deviantart.net/fs70/f/2014/004/8/1/mlp_fim___athewm_70_by_fadri-d70udbu.jpg
+    # fadri
+    extractor_2_pattern = r'_by_(.+)-[a-zA-Z0-9]+\.+[a-zA-Z0-9]{,5}$'
+    extractor_2_username_search = re.search(extractor_2_pattern,url, re.DOTALL | re.IGNORECASE)
+    if extractor_2_username_search:
+        username = extractor_2_username_search.group(1)
+        return username
+
 
 def furaffinity_convert(url):
     # Turn a furaffinity URL into a furaffinity username.
@@ -324,7 +333,7 @@ def export_usernames_from_dict(link_dict):
         for output_url in link_dict[domain_key]:
             #print 'output_url', output_url
             # Handle DeviantArt
-            if domain_key == 'deviantart.com':
+            if 'deviantart.com' in domain_key:
                 domain_lines.append(deviantart_convert(output_url))
             # Handle Furaffinity
             elif domain_key == 'furaffinity.net':

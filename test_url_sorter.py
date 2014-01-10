@@ -276,6 +276,49 @@ class TestHentaiFoundryConvertBadInput(unittest.TestCase):
         result = hentaifoundry_convert(test_input)
         self.assertEqual(result, expected_result)
 
+
+
+
+class TestDeviantartConvert(unittest.TestCase):
+    """Tests for deviantart_convert"""
+    def test_image_hotlink_goombaman(self):
+        test_input= "http://fc05.deviantart.net/fs71/f/2014/004/5/8/vore_animation_by_secretgoombaman12345-d70u9fd.gif"
+        expected_result = "secretgoombaman12345"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_submission_page_littlelace(self):
+        test_input= "http://littlelace.deviantart.com/art/Sleepy-Fluttershy-418893731"
+        expected_result = "littlelace"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_user_page_littlelace(self):
+        test_input= "http://littlelace.deviantart.com/"
+        expected_result = "littlelace"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_gallery_folder_littlelace(self):
+        test_input= "http://littlelace.deviantart.com/gallery/38533717"
+        expected_result = "littlelace"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_favs_page_littlelace(self):
+        test_input= "http://littlelace.deviantart.com/favourites/"
+        expected_result = "littlelace"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_favs_page2_littlelace(self):
+        test_input= "http://littlelace.deviantart.com/favourites/?offset=120"
+        expected_result = "littlelace"
+        result = deviantart_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+
+
 def main():
     unittest.main()
 
