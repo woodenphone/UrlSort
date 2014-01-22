@@ -319,6 +319,169 @@ class TestDeviantartConvert(unittest.TestCase):
 
 
 
+
+class TestWeasylConvertGood(unittest.TestCase):
+    """Tests for weasyl_convert()"""
+    # Test good urls
+    def test_userpage_gd(self):
+        test_input= "https://www.weasyl.com/~graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_submissions_gallery_pg1_gd(self):
+        test_input= "https://www.weasyl.com/submissions/graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_submissions_gallery_pg2_gd(self):
+        test_input= "https://www.weasyl.com/submissions/graphitedisk?nextid=364909"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_submissions_gallery_folder_pg1_gd(self):
+        test_input= "https://www.weasyl.com/submissions/graphitedisk?folderid=39389"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_journals_pg1_gd(self):
+        test_input= "https://www.weasyl.com/journals/graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_collections_gallery_pg1_gd(self):
+        test_input= "https://www.weasyl.com/collections/graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_characters_gallery_pg1_gd(self):
+        test_input= "https://www.weasyl.com/characters/graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_shouts_pg1_gd(self):
+        test_input= "https://www.weasyl.com/shouts/graphitedisk"
+        expected_result = "graphitedisk"
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+class TestWeasylConvertBad(unittest.TestCase):
+    """Tests for weasyl_convert()"""
+    # Test bad urls
+    def test_main_page(self):
+        test_input= "https://www.weasyl.com/"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_inbox(self):
+        test_input= "https://www.weasyl.com/notes"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_settings(self):
+        test_input= "https://www.weasyl.com/control"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_help(self):
+        test_input= "https://www.weasyl.com/help"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_forums(self):
+        test_input= "http://forums.weasyl.com/vbulletin/forum.php"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_policy_community(self):
+        test_input= "https://www.weasyl.com/policy/community"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    # Browse pages
+    def test_browse_basic(self):
+        test_input= "https://www.weasyl.com/search"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_submissions_pg1(self):
+        test_input= "https://www.weasyl.com/search?find=submit"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_submissions_pg2(self):
+        test_input= "https://www.weasyl.com/search?nextid=375198&find=submit"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_characters_pg1(self):
+        test_input= "https://www.weasyl.com/search?find=char"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_characters_pg2(self):
+        test_input= "https://www.weasyl.com/search?nextid=24831&find=char"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_journals_pg2(self):
+        test_input= "https://www.weasyl.com/search?nextid=26662&find=journal"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_browse_journals_pg1(self):
+        test_input= "https://www.weasyl.com/search?find=journal"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    # Search
+    def test_search_pg1(self):
+        test_input= "https://www.weasyl.com/search?searchid=gNFHQg11xCiWhal"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+    def test_search_pg2(self):
+        test_input= "https://www.weasyl.com/search?searchid=gNFHQg11xCiWhal&page=1"
+        expected_result = None
+        result = weasyl_convert(test_input)
+        self.assertEqual(result, expected_result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def main():
     unittest.main()
 

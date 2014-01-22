@@ -315,7 +315,60 @@ def hentaifoundry_convert(link):
     if old_user_favs_search:
         return old_user_favs_search.group(1)
 
+
+def weasyl_convert(link):
+    """Extract username from weasyl urls"""
+    # Userpages
+    # https://www.weasyl.com/~graphitedisk
+    # (?:http)s?://(?:www\.)weasyl.com/~([^/]+)
+    userpage_regex = """(?:http)s?://(?:www\.)weasyl.com/~([^/]+)"""
+    userpage_search = re.search(userpage_regex, link)
+    if userpage_search:
+        userpage_username = userpage_search.group(1)
+        return userpage_username
+
+    # Submissions gallery
+    # https://www.weasyl.com/submissions/graphitedisk
+    # https://www.weasyl.com/submissions/gollygeewhiz?nextid=65058
+    # (?:http)s?://(?:www\.)weasyl.com/submissions/([^/?]+)
+    submissions_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/submissions/([^/?]+)"""
+    submissions_gallery_search = re.search(submissions_gallery_regex, link)
+    if submissions_gallery_search:
+        submissions_gallery_username = submissions_gallery_search.group(1)
+        return submissions_gallery_username
+
+    # Collections gallery
+    # https://www.weasyl.com/characters/gollygeewhiz
+    collections_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/collections/([^/?]+)"""
+    collections_gallery_search = re.search(collections_gallery_regex, link)
+    if collections_gallery_search:
+        collections_gallery_username = collections_gallery_search.group(1)
+        return collections_gallery_username
+
+    # Characters gallery
+    characters_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/characters/([^/?]+)"""
+    characters_gallery_search = re.search(characters_gallery_regex, link)
+    if characters_gallery_search:
+        characters_gallery_username = characters_gallery_search.group(1)
+        return characters_gallery_username
+
+    # Shouts listing
+    shouts_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/shouts/([^/?]+)"""
+    shouts_gallery_search = re.search(shouts_gallery_regex, link)
+    if shouts_gallery_search:
+        shouts_gallery_username = shouts_gallery_search.group(1)
+        return shouts_gallery_username
+
+    # Journals listing
+    journals_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/journals/([^/?]+)"""
+    journals_gallery_search = re.search(journals_gallery_regex, link)
+    if journals_gallery_search:
+        journals_gallery_username = journals_gallery_search.group(1)
+        return journals_gallery_username
+
+
 # End converter functions
+
 
 def export_usernames_from_file(input_file_path='paste_here.txt'):
     #read the specified text file and output a list of usernames for each recognized domain
@@ -351,13 +404,19 @@ def export_usernames_from_dict(link_dict):
             # Handle HentaiFoundry
             elif domain_key == 'hentai-foundry.com':
                 domain_lines.append(hentaifoundry_convert(output_url))
+            # Handle HentaiFoundry
+            elif domain_key == 'weasyl.com':
+                domain_lines.append(weasyl_convert(output_url))
         # print 'domain_lines', domain_lines
         if len(domain_lines) > 0:
             unique_domain_lines = uniquify(domain_lines)
             output_string = ''
             # Assemble output string from URL strings
             for line in unique_domain_lines:
-                output_string += str(line) + '\n'
+                if line is None:
+                    continue
+                else:
+                    output_string += str(line) + '\n'
             # print 'output_string', output_string
             output_path = 'parsed_output/' + output_filename
             save_text(output_path, output_string)
