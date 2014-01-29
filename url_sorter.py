@@ -13,7 +13,8 @@
 import re
 import urlparse
 import os
-import BeautifulSoup
+import fnmatch
+import logging
 
 def uniquify(seq, idfun=None):
     # List uniquifier from
@@ -36,7 +37,8 @@ def uniquify(seq, idfun=None):
 def extractlinks(html):
     # Copied from:
     # http://stackoverflow.com/questions/520031/whats-the-cleanest-way-to-extract-urls-from-a-string-using-python
-    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    # old regex http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+
+    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+~]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     links = re.findall(url_regex,html, re.DOTALL)
     return links
 
@@ -421,15 +423,63 @@ def export_usernames_from_dict(link_dict):
             output_path = 'parsed_output/' + output_filename
             save_text(output_path, output_string)
 
+
 def export_from_file(input_file_path='paste_here.txt'):
+    """Parse data from a single file"""
     unsorted_data = load_textfile(input_file_path)
     link_dict = build_link_dict(unsorted_data)
     export_usernames_from_dict(link_dict)
     export_urls_from_dict(link_dict)
 
 
+def walk_for_files(start_path,pattern_list):
+    """Use os.walk to collect a list of paths to files mathcing input parameters.
+    Takes in a starting path and a list of patterns to check against filenames
+    Patterns follow fnmatch conventions."""
+    assert(type(start_path) == type(""))
+    assert(type(pattern_list) == type([]))
+    matches = []
+    for root, dirs, files in os.walk(start_path):
+        for pattern in pattern_list:
+            assert(type(pattern) == type(""))
+            for filename in fnmatch.filter(files,pattern):
+                match = os.path.join(root,filename)
+                matches.append(match)
+    return matches
+
+
+def import_folder(folder_path="to_scan"):
+    """Scan through a folder, read any text files, concatenate the text inside,
+     and return the found text as a string"""
+    # Scan folder
+    filename_patterns = [
+    "*.txt",
+    ]
+    input_file_paths = walk_for_files(folder_path, filename_patterns)
+    # Read files
+    joined_input_data = ""
+    for input_file_path in input_file_paths:
+        file_data = load_textfile(input_file_path)
+        joined_input_data += ("\n\n\nFILE_SEPERATOR\n\n\n" + file_data)# Add seperator for debugging
+    return joined_input_data
+
+
+def export_from_folder(folder_path="to_scan"):
+    """Read data from every file in a folder, parse the found data, and export what is extracted."""
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        return
+    data_to_scan = import_folder(folder_path)
+    # Parse files into link dicts
+    link_dict = build_link_dict(data_to_scan)
+    # Export link dicts
+    export_usernames_from_dict(link_dict)
+    export_urls_from_dict(link_dict)
+
+
 def main():
-    export_from_file()
+    #export_from_file()
+    export_from_folder()
     print 'Job done.'
     raw_input('Press Return to exit.')
 
