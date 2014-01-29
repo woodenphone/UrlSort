@@ -16,6 +16,9 @@ import os
 import fnmatch
 import logging
 
+
+
+
 def uniquify(seq, idfun=None):
     # List uniquifier from
     # http://www.peterbe.com/plog/uniqifiers-benchmark
@@ -34,6 +37,7 @@ def uniquify(seq, idfun=None):
        result.append(item)
    return result
 
+
 def extractlinks(html):
     # Copied from:
     # http://stackoverflow.com/questions/520031/whats-the-cleanest-way-to-extract-urls-from-a-string-using-python
@@ -41,6 +45,7 @@ def extractlinks(html):
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+~]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     links = re.findall(url_regex,html, re.DOTALL)
     return links
+
 
 def load_textfile(filepath):
     # Return data in specified file, if no file found create it.
@@ -56,6 +61,7 @@ def load_textfile(filepath):
         f.write(new_file_text)
         f.close()
 
+
 def save_text(filepath,data):
     #print 'save_text:filepath', filepath
     save_dir = os.path.dirname(filepath)
@@ -66,6 +72,7 @@ def save_text(filepath,data):
     f.write(data)
     f.close()
     #print 'save_text:Saved data to file', filepath
+
 
 def extract_domain(url):
     #return the domain from given url
@@ -89,14 +96,17 @@ def extract_domain(url):
     else:
         return domain
 
+
 def sanitize_filename(filename):
     # Sanitize a filename (not a path)
     sanitized_filename = re.sub('[^\./a-zA-Z0-9_-]+', '', filename)
     return sanitized_filename
 
+
 def sanitize_dict_name(dict_name):
     sanitized_dict_name = re.sub("[^\.a-zA-Z0-9_-]", "", dict_name)
     return sanitized_dict_name
+
 
 def build_link_dict(unsorted_data):
     #turn a string with urls in it into a dict using format {'DomainName.com':['url1','url2']}
@@ -112,12 +122,14 @@ def build_link_dict(unsorted_data):
         sorting_dict[url_domain].append(url)
     return sorting_dict
 
+
 def export_urls_from_file(input_file_path='paste_here.txt'):
     #read the specified text file and output a list of links for each domain
     unsorted_data = load_textfile(input_file_path)
     #print 'unsorted_data', unsorted_data
     link_dict = build_link_dict(unsorted_data)
     export_urls_from_dict(link_dict)
+
 
 def export_urls_from_dict(link_dict):
     for domain_key in link_dict.keys():
@@ -129,6 +141,9 @@ def export_urls_from_dict(link_dict):
         #print 'output_data', output_data
         output_path = 'output/' + output_filename
         save_text(output_path,output_data)
+
+
+
 
 # Converter functions; These take URLs and return usernames for that site
 def deviantart_convert(url):
@@ -165,6 +180,7 @@ def furaffinity_convert(url):
         return username
         #print 'furaffinity_convert: username:',username
 
+
 def inkbunny_convert(url):
     # Turn an InkBunny URL into an InkBunny username.
     # Valid URL examples:
@@ -186,6 +202,7 @@ def inkbunny_convert(url):
         username = username_search.group(1)
         return username
 
+
 def tumblr_convert(url):
     # Turn a Tumblr URL into a Tumblr username.
     # Valid URL examples:
@@ -198,6 +215,7 @@ def tumblr_convert(url):
         return username
     # if no match, just return the input url
     return url
+
 
 def pixiv_convert(url):
     # Turn a Pixiv URL into a Pixiv UserID.
@@ -218,6 +236,7 @@ def pixiv_convert(url):
             username = username_search.group(1)
             return username
 
+
 def aryion_convert(url):
     # Turn an Ekas Portal URL into an Ekas Portal username.
     # Valid URL examples:
@@ -227,6 +246,7 @@ def aryion_convert(url):
     if username_search:
         username = username_search.group(1)
         return username
+
 
 def hentaifoundry_convert(link):
     """Convert a url into a username if possible"""
@@ -239,7 +259,6 @@ def hentaifoundry_convert(link):
     profile_page_search = re.search(profile_page_search_regex, link)
     if profile_page_search:
         return profile_page_search.group(1)
-
     # Picture gallery page, also picture submission page
     # http://www.hentai-foundry.com/pictures/user/NinjaKitty
     # http://www.hentai-foundry.com/pictures/user/NinjaKitty/242338/Raffle-Winner-AnimeFlux---123-Square
@@ -247,28 +266,24 @@ def hentaifoundry_convert(link):
     picture_gallery_page_search = re.search(picture_gallery_page_search_regex, link)
     if picture_gallery_page_search:
         return picture_gallery_page_search.group(1)
-
     # Stories gallery page
     # http://www.hentai-foundry.com/stories/user/NinjaKitty
     stories_gallery_page_search_regex = """hentai\-foundry\.com/pictures/user/([^/]+)"""
     stories_gallery_page_search = re.search(stories_gallery_page_search_regex, link)
     if stories_gallery_page_search:
         return stories_gallery_page_search.group(1)
-
     # Favorite pictures page
     # http://www.hentai-foundry.com/users/Faves?username=NinjaKitty
     favorite_pictures_page_search_regex = """http://www.hentai-foundry.com/users/Faves\?username=(\w+)"""
     favorite_pictures_page_search = re.search(favorite_pictures_page_search_regex, link)
     if favorite_pictures_page_search:
         return favorite_pictures_page_search.group(1)
-
     # Favorite users page
     # http://www.hentai-foundry.com/users/Faves?username=NinjaKitty
     favorite_users_page_search_regex = """hentai\-foundry\.com/users/Faves?username=(.+)$"""
     favorite_users_page_search = re.search(favorite_users_page_search_regex, link)
     if favorite_users_page_search:
         return favorite_users_page_search.group(1)
-
     # Favorite users recent pictures/stories page
     # http://www.hentai-foundry.com/users/FaveUsersRecentPictures?username=NinjaKitty
     # http://www.hentai-foundry.com/users/FaveUsersRecentStories?username=NinjaKitty
@@ -276,8 +291,6 @@ def hentaifoundry_convert(link):
     favorite_users_recent_pictures_page_search = re.search(favorite_users_recent_pictures_page_search_regex, link)
     if favorite_users_recent_pictures_page_search:
         return favorite_users_recent_pictures_page_search.group(1)
-
-
     #
     # Old style links (before 1-12-2013)
     #
@@ -287,14 +300,12 @@ def hentaifoundry_convert(link):
     old_profile_page_search = re.search(old_profile_page_search_regex, link)
     if old_profile_page_search:
         return old_profile_page_search.group(1)
-
     # Old user page
     # http://www.hentai-foundry.com/user-Dboy.php
     old_user_page_search_regex = """hentai\-foundry\.com/user-(.+?)\.php"""
     old_user_page_search = re.search(old_user_page_search_regex, link)
     if old_user_page_search:
         return old_user_page_search.group(1)
-
     # Old user gallery
     # http://www.hentai-foundry.com/user_pictures-fab3716.page-1.php
     # http://www.hentai-foundry.com/user_stories-nihaotomita.page-1.php
@@ -302,14 +313,12 @@ def hentaifoundry_convert(link):
     old_user_gallery_search = re.search(old_user_gallery_search_regex, link)
     if old_user_gallery_search:
         return old_user_gallery_search.group(1)
-
     # Old user stories gallery
     # http://www.hentai-foundry.com/stories-fab3716.php
     old_user_stories_search_regex = """hentai-foundry.com/stories-([^\.]+)(?:\.page-\d+)?.php"""
     old_user_stories_search = re.search(old_user_stories_search_regex, link)
     if old_user_stories_search:
         return old_user_stories_search.group(1)
-
     # Old user bookmarks
     # http://www.hentai-foundry.com/favorite_pictures-DarkDP.php
     old_user_favs_search_regex = """hentai-foundry.com/favorite_(?:pictures)?(?:stories)?-([^\.]+)(?:\.page-\d+)?.php"""
@@ -328,7 +337,6 @@ def weasyl_convert(link):
     if userpage_search:
         userpage_username = userpage_search.group(1)
         return userpage_username
-
     # Submissions gallery
     # https://www.weasyl.com/submissions/graphitedisk
     # https://www.weasyl.com/submissions/gollygeewhiz?nextid=65058
@@ -338,7 +346,6 @@ def weasyl_convert(link):
     if submissions_gallery_search:
         submissions_gallery_username = submissions_gallery_search.group(1)
         return submissions_gallery_username
-
     # Collections gallery
     # https://www.weasyl.com/characters/gollygeewhiz
     collections_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/collections/([^/?]+)"""
@@ -346,21 +353,18 @@ def weasyl_convert(link):
     if collections_gallery_search:
         collections_gallery_username = collections_gallery_search.group(1)
         return collections_gallery_username
-
     # Characters gallery
     characters_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/characters/([^/?]+)"""
     characters_gallery_search = re.search(characters_gallery_regex, link)
     if characters_gallery_search:
         characters_gallery_username = characters_gallery_search.group(1)
         return characters_gallery_username
-
     # Shouts listing
     shouts_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/shouts/([^/?]+)"""
     shouts_gallery_search = re.search(shouts_gallery_regex, link)
     if shouts_gallery_search:
         shouts_gallery_username = shouts_gallery_search.group(1)
         return shouts_gallery_username
-
     # Journals listing
     journals_gallery_regex = """(?:http)s?://(?:www\.)weasyl.com/journals/([^/?]+)"""
     journals_gallery_search = re.search(journals_gallery_regex, link)
@@ -372,12 +376,16 @@ def weasyl_convert(link):
 # End converter functions
 
 
+
+
+
 def export_usernames_from_file(input_file_path='paste_here.txt'):
     #read the specified text file and output a list of usernames for each recognized domain
     unsorted_data = load_textfile(input_file_path)
     #print 'unsorted_data', unsorted_data
     link_dict = build_link_dict(unsorted_data)
     export_usernames_from_dict(link_dict)
+
 
 def export_usernames_from_dict(link_dict):
     for domain_key in link_dict.keys():
