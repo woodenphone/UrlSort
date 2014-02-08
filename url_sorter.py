@@ -372,7 +372,19 @@ def weasyl_convert(link):
         journals_gallery_username = journals_gallery_search.group(1)
         return journals_gallery_username
 
-
+def derpibooru_convert(link):
+    # Submission_page
+    submission_page_regex = """(?:https?://)?(?:www)?\.?derpibooru\.org/(\d+)"""
+    submission_page_search = re.search(submission_page_regex, link)
+    if submission_page_search:
+        submission_page = submission_page_search.group(1)
+        return submission_page
+    # tag_search
+    tag_search_regex = """https?://derpibooru\.org/tags/([^/]+)"""
+    tag_search_search = re.search(tag_search_regex, link)
+    if tag_search_search:
+        tag_search = tag_search_search.group(1)
+        return tag_search
 # End converter functions
 
 
@@ -414,9 +426,12 @@ def export_usernames_from_dict(link_dict):
             # Handle HentaiFoundry
             elif domain_key == 'hentai-foundry.com':
                 domain_lines.append(hentaifoundry_convert(output_url))
-            # Handle HentaiFoundry
+            # Handle weasyl
             elif domain_key == 'weasyl.com':
                 domain_lines.append(weasyl_convert(output_url))
+            # Handle Derpibooru
+            elif 'derpibooru' in domain_key:
+                domain_lines.append(derpibooru_convert(output_url))
         # print 'domain_lines', domain_lines
         if len(domain_lines) > 0:
             unique_domain_lines = uniquify(domain_lines)
