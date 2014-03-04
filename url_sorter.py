@@ -385,6 +385,11 @@ def derpibooru_convert(link):
     if tag_search_search:
         tag_search = tag_search_search.group(1)
         return tag_search
+
+
+def vocaroo_convert(link):
+    clip_id = link.split("/")[-1]
+    return clip_id
 # End converter functions
 
 
@@ -432,6 +437,10 @@ def export_usernames_from_dict(link_dict):
             # Handle Derpibooru
             elif 'derpibooru' in domain_key:
                 domain_lines.append(derpibooru_convert(output_url))
+            # Handle Derpibooru
+            elif 'vocaroo' in domain_key:
+                domain_lines.append(vocaroo_convert(output_url))
+
         # print 'domain_lines', domain_lines
         if len(domain_lines) > 0:
             unique_domain_lines = uniquify(domain_lines)
@@ -477,6 +486,8 @@ def import_folder(folder_path="to_scan"):
     # Scan folder
     filename_patterns = [
     "*.txt",
+    "*.htm",
+    "*.html"
     ]
     input_file_paths = walk_for_files(folder_path, filename_patterns)
     # Read files

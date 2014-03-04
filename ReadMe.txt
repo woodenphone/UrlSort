@@ -5,7 +5,7 @@ Also extracts usernames for some domains.
 To Use:
 If first use run script to setup files.
 
-Place urls to sort in "paste_here.txt"
+Place urls to sort in text files in the folder "to_sort"
 Run script again to sort.
 Output will be placed in subdirs "output" and "parsed_output"
 
@@ -20,3 +20,11 @@ aryion.com
 pixiv.net
 hentaifoundry.com
 weasyl.com
+derpibooru.org
+
+
+
+
+I recommend using this program to process saved clipboard history.
+I use ditto for recording my clipboard:
+http://ditto-cp.sourceforge.net/
