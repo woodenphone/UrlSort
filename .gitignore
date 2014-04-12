@@ -2,4 +2,5 @@ paste_here.txt
 parsed_output/
 output/
 to_scan/
+temp/
 *.pyc
